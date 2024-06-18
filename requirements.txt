@@ -1,5 +1,5 @@
 pandas
 numpy
-matplotlib.pyplot
+matplotlib
 streamlit
 streamlit_option_menu
