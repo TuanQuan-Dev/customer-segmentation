@@ -6,13 +6,13 @@ import seaborn as sns
 import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_multi_menu import streamlit_multi_menu
-#from data import SalesData
+from data import SalesData
 
 
 #streamlit run gui.py
 
 # Dữ liệu 
-#myData = SalesData()
+myData = SalesData()
 #myData.pre_proccess()
 #myData.load()
 #myData.product_R(myData.Data)
