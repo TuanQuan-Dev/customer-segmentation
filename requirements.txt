@@ -2,10 +2,9 @@ pandas
 numpy
 matplotlib
 seaborn
-wordcloud
-datetime
+
+
 streamlit
 streamlit_option_menu
 streamlit_multi_menu
-scikit-learn
-warnings
+
