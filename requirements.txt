@@ -2,9 +2,7 @@ pandas
 numpy
 matplotlib
 seaborn
-
-
 streamlit
 streamlit_option_menu
 streamlit_multi_menu
-
+scikit-learn
