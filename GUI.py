@@ -7,15 +7,16 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_multi_menu import streamlit_multi_menu
 from data import SalesData
-
+from homepage import load_homepage
 
 #streamlit run gui.py
 
 # Dữ liệu 
 myData = SalesData()
-#myData.pre_proccess()
 myData.load()
+#myData.pre_proccess()
 #myData.product_R(myData.Data)
+
 
 st.title("DỰ ÁN - PHÂN NHÓM KHÁCH HÀNG")
 st.write("<br/>", unsafe_allow_html=True)
@@ -63,7 +64,7 @@ def DNA():
 
 CSS()
 if choice == "Home":
-    st.header("HOME")
+   load_homepage()
     
     
 elif choice.lower() == "khám thác dữ liệu":
