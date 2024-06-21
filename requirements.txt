@@ -1,5 +1,10 @@
 pandas
 numpy
 matplotlib
+seaborn
+wordcloud
 streamlit
 streamlit_option_menu
+streamlit_multi_menu
+scikit-learn
+warnings
