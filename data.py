@@ -61,7 +61,7 @@ class SalesData():
         dfRFM = self.calculate_RFM(dfData)
         dfRFM = dfRFM.rename(columns={"Days": "Recency", "orderId": "Frequency", "total": "Monetary"})
         
-        # lưu lại dữ liệu đã xử lý
+        # luu lai du lieu
         dfTransaction.to_csv("output_data/transactions.csv", index=False)
         dfData.to_csv("output_data/data.csv", index=False)
         dfRFM.to_csv("output_data/rfm.csv", index=False)
