@@ -14,7 +14,7 @@ from data import SalesData
 # Dữ liệu 
 myData = SalesData()
 #myData.pre_proccess()
-#myData.load()
+myData.load()
 #myData.product_R(myData.Data)
 
 st.title("DỰ ÁN - PHÂN NHÓM KHÁCH HÀNG")
