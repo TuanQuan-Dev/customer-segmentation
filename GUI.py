@@ -276,7 +276,9 @@ def RFM():
 #----------------------------------------------------------------------------------
 def search():
     
-    customer = st.text_input("""*** Vui lòng nhập id khách hàng:""")
+    options = myData.RFM["member_number"]
+    customer = st.selectbox("""**Vui lòng chọn id khách hàng:**""", options, placeholder="Chọn ID")
+        
     if (customer == ""):
         return
     
@@ -327,5 +329,3 @@ elif choice.lower() == "tra cứu":
 elif choice.lower() == "hướng dẫn":
     load_help()
     
-
-
