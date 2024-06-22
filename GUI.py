@@ -49,7 +49,7 @@ def DNA():
     #st.header("KHAI THÁC DỮ LIỆU") 
       
     sub_menus = {"Tổng Quan":["Xem"],
-             "Khách Hàng":["Khách Hàng"], 
+             "Khách Hàng":["Khách Hàng", "RFM"], 
              "Sản Phẩm":["Sản Phẩm"]}
     
     sub_menu_icons = {
@@ -196,8 +196,28 @@ def DNA():
             plt.figure()
             plt.imshow(wordcloud, interpolation="bilinear")
             plt.axis("off")
-            st.pyplot(plt)            
+            st.pyplot(plt)
     
+        elif selected_menu.lower() == "rfm":
+            plt.subplot(3, 1, 1) 
+            plt.hist(myData.RFM["Recency"], bins=20, edgecolor="black") # Chọn số lượng bins phù hợp
+            plt.title("Distribution of Recency")
+            plt.xlabel("Recency")
+
+            # Vẽ phân phối của 'Frequency'
+            plt.subplot(3, 1, 2) # 3 hàng, 1 cột, vị trí thứ hai
+            plt.hist(myData.RFM["Frequency"], bins=10, edgecolor="black") # Chọn số lượng bins phù hợp
+            plt.title("Distribution of Frequency")
+            plt.xlabel("Frequency")
+
+            # Vẽ phân phối của 'Monetary'
+            plt.subplot(3, 1, 3) # 3 hàng, 1 cột, vị trí thứ ba
+            plt.hist(myData.RFM["Monetary"], bins=10, edgecolor="black") # Chọn số lượng bins phù hợp
+            plt.title("Distribution of Monetary")
+            plt.xlabel("Monetary")
+
+            plt.tight_layout()
+            st.pyplot(plt)
 
 #----------------------------------------------------------------------------------
 def RFM():    
