@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from datetime import datetime
+ 
+
 
 class SalesData():
 
@@ -35,7 +37,7 @@ class SalesData():
         self._dfProduct = pd.read_csv("input_data/Products_with_Prices.csv")
         self._dfTransaction = pd.read_csv("output_data/transactions.csv")
         self._dfData = pd.read_csv("output_data/data.csv")
-        self._dfRFM = pd.read_csv("output_data/rfm.csv")
+        self._dfRFM = pd.read_csv("output_data/customer_rfm.csv")
         
         self._dfTransaction["order_date"] = pd.to_datetime(self._dfTransaction["order_date"], format="%Y-%m-%d")
         self._dfData["order_date"] = pd.to_datetime(self._dfData["order_date"], format="%Y-%m-%d")
@@ -104,3 +106,30 @@ class SalesData():
         dfR = dfTemp.groupby("productName").agg({"Days": Recency}).reset_index()
         dfR = dfR.rename(columns={"Days": "Recency"})
         dfR.to_csv("output_data/product_r.csv", index=False)
+
+#-------------------------------------------------------------------------------------
+    def rfm_level(self, df):    
+        if df["R"] > 3 and df["F"] > 1:
+            return "ACTIVE"
+        elif df["R"] == 1 and df["F"] == 1 and df["M"] == 1:
+            return "NEW"
+        else:
+            return "REGULARS"   
+
+#-------------------------------------------------------------------------------------
+    def customer_RFM(self):
+        
+        df = pd.read_csv("output_data/rfm.csv")
+        
+        r_labels = range(4, 0, -1)
+        f_labels = range(1, 5)
+        m_labels = range(1, 5)
+
+        r_groups = pd.qcut(df["Recency"].rank(method="first"), q=4, labels=r_labels)
+        f_groups = pd.qcut(df["Frequency"].rank(method="first"), q=4, labels=f_labels)
+        m_groups = pd.qcut(df["Monetary"].rank(method="first"), q=4, labels=m_labels)
+
+        df = df.assign(R = r_groups.values, F = f_groups.values, M = m_groups.values)
+        
+        df["RFM_Level"] = df.apply(self.rfm_level, axis=1)
+        df.to_csv("output_data/customer_rfm.csv", index=False)

@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import squarify
+import plotly.express as px
 from wordcloud import WordCloud
 
 import streamlit as st
@@ -17,17 +19,17 @@ myData = SalesData()
 myData.load()
 #myData.pre_proccess()
 #myData.product_R(myData.Data)
+myData.customer_RFM()
 
-
-st.title("DỰ ÁN - PHÂN NHÓM KHÁCH HÀNG")
+st.title("ĐỒ ÁN - PHÂN NHÓM KHÁCH HÀNG")
 st.write("<br/>", unsafe_allow_html=True)
 
-menu = ["Home", "Khám Thác Dữ Liệu", "Chua ghi"]
+menu = ["Home", "Khám Phá Dữ Liệu", "Kết Quả", "Tra Cứu", "Hướng Dẫn"]
 
 
 with st.sidebar:
     choice = option_menu("",options=menu, 
-        icons=["home", "gear", "gear", "file"], menu_icon="cast", default_index=0)
+        icons=["home", "file", "list-task", "search", "info-square"], menu_icon="cast", default_index=0)
 
 
 #----------------------------------------------------------------------------------
@@ -195,7 +197,100 @@ def DNA():
             plt.axis("off")
             st.pyplot(plt)            
     
+
+#----------------------------------------------------------------------------------
+def RFM():    
+            
+    st.write(f"""
+        <div style="font-size:1.1em">
+            Tập khách hàng được phân thành 3 nhóm
+        </div> 
+        """
+        , unsafe_allow_html=True)
+    
+    df = pd.read_csv("output_data/customer_rfm.csv")
+    rfm_agg = df.groupby("RFM_Level").agg({
+    "Recency": "mean",
+    "Frequency": "mean",
+    "Monetary": ["mean", "count"]}).round(0)
+
+    rfm_agg.columns = rfm_agg.columns.droplevel()
+    rfm_agg.columns = ["RecencyMean", "FrequencyMean", "MonetaryMean", "Count"]
+    rfm_agg["Percent"] = round((rfm_agg['Count']/rfm_agg.Count.sum())*100, 2)
+
+    # Reset the index
+    rfm_agg = rfm_agg.reset_index()
+    
+    fig = plt.gcf()
+    ax = fig.add_subplot()
+    fig.set_size_inches(16, 10)
+
+    colors_dict = {"ACTIVE":"red", "NEW":"green", "REGULARS":"blue" }
+
+    squarify.plot(sizes=rfm_agg["Count"],
+                  text_kwargs={"fontsize":12, "weight":"bold", "fontname":"sans serif"},
+                  color=colors_dict.values(),
+                  label=['{} \n{:.0f} days \n{:.0f} orders \n{:.0f} $ \n{:.0f} customers ({}%)'.format(*rfm_agg.iloc[i])
+                          for i in range(0, len(rfm_agg))], alpha=0.5 )
+
+    #plt.title("PHÂN NHÓM KHÁCH HÀNG", fontsize=26, fontweight="bold")
+    plt.axis("off")
+    
+    st.pyplot(plt)
+           
+    fig = px.scatter(rfm_agg, x="RecencyMean", y="MonetaryMean", size="FrequencyMean", color="RFM_Level", 
+         color_discrete_map=colors_dict, hover_name="RFM_Level", size_max=100)        
+    st.plotly_chart(fig)
+    
+    # Doanh số bán theo từng phân nhóm 
+    st.write("""<div style=font-size:1.3em; font-weight:bold>Danh số theo phân nhóm</div>""", unsafe_allow_html=True)  
+
+    plt.figure(figsize=(6, 4))    
+    df = myData.RFM.groupby("RFM_Level")["Monetary"].sum().reset_index()
+    total = sum(df["Monetary"])
+    df["Monetary_percentage"] = round(df["Monetary"] * 100 / total, 0)
+    labels = df["RFM_Level"]
+    sizes = df["Monetary_percentage"]
+    colors = ["red", "green", "blue"]
+    
+    p, tx, autotexts = plt.pie(sizes, labels=labels, colors=colors, autopct="")
+
+    for i, a in enumerate(autotexts):
+        a.set_text(f"{sizes[i]} %")
+    st.pyplot(plt)
         
+        
+#----------------------------------------------------------------------------------
+def search():
+    
+    customer = st.text_input("""*** Vui lòng nhập id khách hàng:""")
+    if (customer == ""):
+        return
+    
+    st.write("")
+    df = myData.RFM[myData.RFM["member_number"] == int(customer)]
+    if (df.shape[0] == 0):
+        st.warning("ID đã nhập không đúng.")
+        return
+    
+    st.write(f"""<div style=font-size:1.3em; font-weight:bold>Khách hàng này thuộc nhóm <b>{df["RFM_Level"].values[0]}</b><br/>
+            Tần suất mua hàng: <b>{df["Recency"].values[0]}</b> <br/>
+            Số lượt mua hàng (nếu trong 1 ngày mua nhiều lần chỉ tính 1): <b>{df["Frequency"].values[0]}</b> <br/>
+            Tổng giá trị đơn hàng: <b>{df["Monetary"].values[0]}</b> <br/>
+            Sản phẩm hay mua
+             </div>""", unsafe_allow_html=True) 
+        
+    df = myData.Data[myData.Data["member_number"] == int(customer)]
+    text = " ".join(df["productName"])
+    wordcloud = WordCloud(max_font_size=50, max_words=100, background_color="white").generate(text)
+
+    plt.figure()
+    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.axis("off")
+    st.pyplot(plt)
+    
+    pass
+
 #----------------------------------------------------------------------------------
 
 CSS()
@@ -203,9 +298,18 @@ if choice == "Home":
    load_homepage()
     
     
-elif choice.lower() == "khám thác dữ liệu":
+elif choice.lower() == "khám phá dữ liệu":
     st.header("VỀ ỨNG DỤNG RECOMMENDER SYSTEMS")
-    DNA()   
+    DNA()
+
+elif choice.lower() == "kết quả":
+    st.header("KẾT QUẢ PHÂN NHÓM KHÁCH HÀNG")
+    RFM() 
+    
+elif choice.lower() == "tra cứu":
+    st.header("TRA CỨU THÔNG TIN KHÁCH HÀNG")
+    
+    search() 
 
 elif choice.lower() == "read-me":
     st.header("VỀ ỨNG DỤNG RECOMMENDER SYSTEMS")
