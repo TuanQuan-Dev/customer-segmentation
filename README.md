@@ -33,3 +33,9 @@ Nhập id (Các id ví dụ: 1000, 1001, 1002, 1003, 1004) của khách hàng v�
 
 
 
+
+## 3. Cấu trúc ứng dụng
+- **homepage.py:** viết nội dung trang home
+- **help.py:** viết nội dung trang hướng dẫn
+- **data.py:** xử lý nguồn dữ liệu, phân nhóm khác hàng. Dữ liệu sau khi phân nhóm được lưu trong file **customer_rfm.csv** trong thư mục output_data
+- **GUI.py:** file chính của giao diện, thiết kế giao diện của web, vẽ biểu đồ
