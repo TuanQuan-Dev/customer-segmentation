@@ -9,3 +9,4 @@ scikit-learn
 datetime
 wordcloud
 squarify
+plotly-express
