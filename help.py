@@ -20,8 +20,8 @@ def load_help():
                 <ul>
                     <li><b>homepage.py:</b> viết nội dung trang home</li>
                     <li><b>help.py:</b> viết nội dung trang hướng dẫn</li>
-                    <li><b>data.py:</b> xử lý nguồn dữ liệu, phân nhóm khác hàng
-                        Dữ liệu sau khi phân nhóm được lưu thành file <i><b>customer_rfm.csv</b></i> trong thư mục output_data
+                    <li><b>data.py:</b> xử lý nguồn dữ liệu, phân nhóm khác hàng<br/>
+                        Dữ liệu sau khi phân nhóm được lưu trong file <i><b>customer_rfm.csv</b></i> trong thư mục output_data
                     </li>
                     <li><b>GUI.py:</b> file chính của giao diện, thiết kế giao diện của web, vẽ biểu đồ</li>
                 </ul>
