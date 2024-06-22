@@ -243,7 +243,7 @@ def RFM():
     st.plotly_chart(fig)
     
     # Doanh số bán theo từng phân nhóm 
-    st.write("""<div style=font-size:1.3em; font-weight:bold>Danh số theo phân nhóm</div>""", unsafe_allow_html=True)  
+    st.write("""<div style=font-size:1.3em; font-weight:bold>Danh số theo phân nhóm</div>""", unsafe_allow_html=True)
 
     plt.figure(figsize=(6, 4))    
     df = myData.RFM.groupby("RFM_Level")["Monetary"].sum().reset_index()
@@ -257,6 +257,18 @@ def RFM():
 
     for i, a in enumerate(autotexts):
         a.set_text(f"{sizes[i]} %")
+    st.pyplot(plt)
+    
+    st.write("""<div style=font-size:1.3em; font-weight:bold>Sản phẩm nhóm <b>"ACTICE"</b> đã mua</div>""", unsafe_allow_html=True)  
+    df = myData.RFM[myData.RFM["RFM_Level"] == "ACTIVE"]
+    df = pd.merge(df, myData.Data, on="member_number")
+    
+    text = " ".join(df["productName"])
+    wordcloud = WordCloud(max_font_size=50, max_words=100, background_color="white").generate(text)
+
+    plt.figure()
+    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.axis("off")
     st.pyplot(plt)
         
         
