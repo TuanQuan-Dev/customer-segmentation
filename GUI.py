@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import squarify
-import plotly.express as px
+#import plotly.express as px
 from wordcloud import WordCloud
 
 import streamlit as st
@@ -238,9 +238,9 @@ def RFM():
     
     st.pyplot(plt)
            
-    fig = px.scatter(rfm_agg, x="RecencyMean", y="MonetaryMean", size="FrequencyMean", color="RFM_Level", 
-         color_discrete_map=colors_dict, hover_name="RFM_Level", size_max=100)        
-    st.plotly_chart(fig)
+    # fig = px.scatter(rfm_agg, x="RecencyMean", y="MonetaryMean", size="FrequencyMean", color="RFM_Level", 
+    #      color_discrete_map=colors_dict, hover_name="RFM_Level", size_max=100)        
+    # st.plotly_chart(fig)
     
     # Doanh số bán theo từng phân nhóm 
     st.write("""<div style=font-size:1.3em; font-weight:bold>Danh số theo phân nhóm</div>""", unsafe_allow_html=True)  

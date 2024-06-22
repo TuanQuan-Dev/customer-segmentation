@@ -8,3 +8,4 @@ streamlit_multi_menu
 scikit-learn
 datetime
 wordcloud
+squarify
