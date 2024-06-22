@@ -45,7 +45,7 @@ def CSS():
            
 
 #----------------------------------------------------------------------------------
-def DNA():
+def EDA():
     #st.header("KHAI THÁC DỮ LIỆU") 
       
     sub_menus = {"Tổng Quan":["Xem"],
@@ -335,7 +335,7 @@ if choice == "Home":
     
 elif choice.lower() == "khám phá dữ liệu":
     st.header("VỀ ỨNG DỤNG RECOMMENDER SYSTEMS")
-    DNA()
+    EDA()
 
 elif choice.lower() == "kết quả":
     st.header("KẾT QUẢ PHÂN NHÓM KHÁCH HÀNG")
