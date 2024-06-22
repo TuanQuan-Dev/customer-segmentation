@@ -11,6 +11,7 @@ from streamlit_option_menu import option_menu
 from streamlit_multi_menu import streamlit_multi_menu
 from data import SalesData
 from homepage import load_homepage
+from help import load_help
 
 #streamlit run gui.py
 
@@ -323,41 +324,8 @@ elif choice.lower() == "tra cứu":
     
     search() 
 
-elif choice.lower() == "read-me":
-    st.header("VỀ ỨNG DỤNG RECOMMENDER SYSTEMS")
-    
-    st.write("""
-            <div style="font-size:1.2em">
-                Hệ thống được chia làm 2 phần:<br/>
-                <ol>
-                    <li><b>Người dùng chưa có tài khoản (Content-based filtering)</b>
-                        <div style="font-size:1.1em">
-                            <ul>
-                                <li>
-                                    Khi người sử dụng không nhập gì vào ô tìm kiếm, hệ thống tự gợi ý 6 khóa học cho học viên
-                                </li>
-                                <li>
-                                    Nếu nhập vào ô tìm kiếm, hệ thống sẽ gợi ý các khóa học liên quan tới từ gợi ý trên. 
-                                    Như tên khóa học, đơn vị đào tạo, trình độ, kết quả khóa học
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><b>Người dùng đã có tài khoản (Collaborative filtering)</b>
-                        <div style="font-size:1.1em">
-                            Hệ thống dựa vào lịch sử đánh giá của học viên về các khóa đã học để đề xuất cho học viên các khóa học phù hợp                                                            
-                        </div>
-                    </li>
-                    <li><b>Các thành viên trong nhóm</b>
-                        <ul>
-                            <li>Thái Tuấn Quân</li>
-                            <li>Lê Thị Hương Quỳnh</li>
-                            <li>Huỳnh Chí Tài</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div> 
-            """, unsafe_allow_html=True)
+elif choice.lower() == "hướng dẫn":
+    load_help()
     
 
 
